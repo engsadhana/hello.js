@@ -1,0 +1,11 @@
+#genderOther + label {
+    color: blue;
+}
+
+.profileImage label {
+    color: rgb(156, 45, 123);
+}
+
+.profileImage input {
+    border: 5px;
+}
