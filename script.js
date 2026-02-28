@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function getDatabase() {
     let data = localStorage.getItem(userKey);
-    return data ? JSON.parse(data) : { users: [] };
+    return data ? JSON.parse(data) : [];
   }
 
   function saveDatabase(db) {
@@ -28,7 +28,11 @@ document.addEventListener("DOMContentLoaded", function () {
       row.innerHTML = `
         <td>${user.id}</td>
         <td>${user.name}</td>
-        <td>${user.age}</td>
+        <td>${user.website}</td>
+        <td>${user.address.suite},${user.address.street},${user.address.city},${user.address.zipcode}</td>
+        <td>${user.company.name}, ${user.company.bs}</td>
+        <td>>${user.email}</td>
+        <td>${user.phone}</td>
         <td>
           <button class="btn btn-sm btn-secondary editBtn">Edit</button>
           <button class="btn btn-sm btn-danger deleteBtn">Delete</button>
