@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-  const userKey = "database";
+  const userKey = "users";
   let editId = null;
 
   function getDatabase() {
@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function loadUsers() {
     let db = getDatabase();
-    bindTable(db.users);
+    bindTable(db);
   }
 
   function bindTable(users) {
