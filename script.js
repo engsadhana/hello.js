@@ -18,72 +18,84 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function bindTable(users) {
+
     let table = document.getElementById("userTable");
     table.innerHTML = "";
 
     users.forEach(function (user) {
 
       let row = document.createElement("tr");
-
+console.log(user);
       row.innerHTML = `
         <td>${user.id}</td>
         <td>${user.name}</td>
         <td>${user.website}</td>
-        <td>${user.address.suite},${user.address.street},${user.address.city},${user.address.zipcode}</td>
-        <td>${user.company.name}, ${user.company.bs}</td>
-        <td>>${user.email}</td>
+        <td>${user.address.street}, ${user.address.suite}, ${user.address.city}, ${user.address.zipcode} </td>
+        <td>${user.company.name}, ${user.company.catchPhrase}</td>
+        <td>${user.email}</td>
         <td>${user.phone}</td>
-        <td>
-          <button class="btn btn-sm btn-secondary editBtn">Edit</button>
-          <button class="btn btn-sm btn-danger deleteBtn">Delete</button>
-        </td>
-      `;
 
-      // EDIT
+        <td>
+        <button class="btn btn-warning btn-sm editBtn">Edit</button>
+        <button class="btn btn-danger btn-sm deleteBtn">Delete</button>
+        </td>`;
+
       row.querySelector(".editBtn").addEventListener("click", function () {
 
         document.getElementById("name").value = user.name;
-        document.getElementById("age").value = user.age;
+        document.getElementById("website").value = user.website;
+        // document.getElementById("address"),.value = .address;
+        document.getElementById("company").value = user.company;
+        document.getElementById("email").value = user.email;
+        document.getElementById("phone").value = user.phone;
 
         editId = user.id;
+
       });
 
-      // DELETE
       row.querySelector(".deleteBtn").addEventListener("click", function () {
+
         let db = getDatabase();
-        db.users = db.users.filter(u => u.id !== user.id);
+
+        db = db.filter((u) => u.id !== user.id);
+
         saveDatabase(db);
+
         loadUsers();
+
       });
 
       table.appendChild(row);
+
     });
+
   }
 
   loadUsers();
 
-  // SAVE
   document.getElementById("btnSave").addEventListener("click", function () {
 
     let name = document.getElementById("name").value.trim();
-    let age = document.getElementById("age").value.trim();
+    let website = document.getElementById("website").value.trim();
+    let address = document.getElementById("address") .value.trim();
+    let company = document.getElementById("company").value.trim();
+    let email = document.getElementById("email").value.trim();
+    let phone = document.getElementById("phone").value.trim();
 
     let nameError = document.getElementById("nameError");
-    let ageError = document.getElementById("ageError");
+    let nameInput = document.getElementById("name");
 
     nameError.innerHTML = "";
-    ageError.innerHTML = "";
+    nameInput.classList.remove("error");
 
     let isValid = true;
 
     if (name === "") {
-      nameError.innerHTML = "Enter your name";
-      isValid = false;
-    }
 
-    if (age === "") {
-      ageError.innerHTML = "Enter your age";
+      nameError.innerHTML = "Enter your name";
+      nameInput.classList.add("error");
       isValid = false;
+
     }
 
     if (!isValid) return;
@@ -91,27 +103,50 @@ document.addEventListener("DOMContentLoaded", function () {
     let db = getDatabase();
 
     if (editId !== null) {
-      let userIndex = db.users.findIndex(u => u.id === editId);
-      db.users[userIndex] = {
+
+      let index = db.findIndex((u) => u.id === editId);
+
+      db[index] = {
+
         id: editId,
-        name: name,
-        age: age
+        name,
+        website,
+        address,
+        company,
+        email,
+        phone
+
       };
+
       editId = null;
+
     } else {
-      db.users.push({
+
+      db.push({
+
         id: Date.now().toString(),
-        name: name,
-        age: age
+        name,
+        website,
+        address,
+        company,
+        email,
+        phone
+
       });
+
     }
 
     saveDatabase(db);
 
     document.getElementById("name").value = "";
-    document.getElementById("age").value = "";
+    document.getElementById("website").value = "";
+    document.getElementById("address").value = "";
+    document.getElementById("company").value = "";
+    document.getElementById("email").value = "";
+    document.getElementById("phone").value = "";
 
     loadUsers();
+
   });
 
 });

@@ -1,56 +1,83 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-  <head>
-    <title>User Form</title>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-    />
-  </head>
-  <body class="container mt-4">
-    <h3>User Form</h3>
+<head>
 
-    <div class="mb-3">
-      <input
-        type="text"
-        id="name"
-        class="form-control"
-        placeholder="Enter Name"
-      />
-      <small id="nameError" class="text-danger"></small>
-    </div>
+<title>User Form</title>
 
-    <div class="mb-3">
-      <input
-        type="number"
-        id="age"
-        class="form-control"
-        placeholder="Enter Age"
-      />
-      <small id="ageError" class="text-danger"></small>
-    </div>
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 
-    <button id="btnSave" class="btn btn-primary">Save</button>
+<style>
 
-    <hr />
+.error::placeholder{
+color:red;
+}
 
-    <h4>User List</h4>
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>website</th>
-          <th>address</th>
-          <th>company</th>
-          <th>email</th>
-          <th>phone</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody id="userTable"></tbody>
-    </table>
+input.error{
+border:2px solid red;
+}
 
-    <script src="script.js"></script>
-  </body>
+</style>
+
+</head>
+
+<body class="container mt-4">
+
+<h3>User Form</h3>
+
+<div class="mb-3">
+<input type="text" id="name" class="form-control" placeholder="Enter Name">
+<small id="nameError" class="text-danger"></small>
+</div>
+
+<div class="mb-3">
+<input type="text" id="website" class="form-control" placeholder="Enter Website">
+</div>
+
+<div class="mb-3">
+<input type="text" id="address" class="form-control" placeholder="Enter Address">
+</div>
+
+<div class="mb-3">
+<input type="text" id="company" class="form-control" placeholder="Enter Company">
+</div>
+
+<div class="mb-3">
+<input type="email" id="email" class="form-control" placeholder="Enter Email">
+</div>
+
+<div class="mb-3">
+<input type="text" id="phone" class="form-control" placeholder="Enter Phone">
+</div>
+
+<button id="btnSave" class="btn btn-primary">Save</button>
+
+<hr>
+
+<h4>User List</h4>
+
+<table class="table table-bordered">
+
+<thead>
+
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Website</th>
+<th>Address</th>
+<th>Company</th>
+<th>Email</th>
+<th>Phone</th>
+<th>Action</th>
+</tr>
+
+</thead>
+
+<tbody id="userTable"></tbody>
+
+</table>
+
+<script src="script.js"></script>
+
+</body>
 </html>
