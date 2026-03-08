@@ -1,14 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
 
+<head>
 <title>User Form</title>
 
 <link rel="stylesheet"
 href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 
 <style>
-
 .error::placeholder{
 color:red;
 }
@@ -16,7 +15,6 @@ color:red;
 input.error{
 border:2px solid red;
 }
-
 </style>
 
 </head>
@@ -26,27 +24,73 @@ border:2px solid red;
 <h3>User Form</h3>
 
 <div class="mb-3">
+<label>Name</label>
 <input type="text" id="name" class="form-control" placeholder="Enter Name">
 <small id="nameError" class="text-danger"></small>
 </div>
 
 <div class="mb-3">
+<label>Website</label>
 <input type="text" id="website" class="form-control" placeholder="Enter Website">
 </div>
 
+<!-- Address -->
+
 <div class="mb-3">
-<input type="text" id="address" class="form-control" placeholder="Enter Address">
+
+<label>Address</label>
+
+<div class="row">
+
+<div class="col">
+<input type="text" id="street" class="form-control" placeholder="Street">
+</div>
+
+<div class="col">
+<input type="text" id="suite" class="form-control" placeholder="Suite">
+</div>
+
+<div class="col">
+<input type="text" id="city" class="form-control" placeholder="City">
+</div>
+
+<div class="col">
+<input type="text" id="zipcode" class="form-control" placeholder="Zipcode">
+</div>
+
+</div>
+</div>
+
+<!-- Company -->
+
+<div class="mb-3">
+
+<label>Company</label>
+
+<div class="row">
+
+<div class="col">
+<input type="text" id="companyName" class="form-control" placeholder="Company Name">
+</div>
+
+<div class="col">
+<input type="text" id="bs" class="form-control" placeholder="BS">
+</div>
+
+<div class="col">
+<input type="text" id="catchPhrase" class="form-control" placeholder="Catch Phrase">
+</div>
+
+</div>
 </div>
 
 <div class="mb-3">
-<input type="text" id="company" class="form-control" placeholder="Enter Company">
-</div>
-
-<div class="mb-3">
+<label>Email</label>
 <input type="email" id="email" class="form-control" placeholder="Enter Email">
 </div>
 
 <div class="mb-3">
+<label>Phone</label>
 <input type="text" id="phone" class="form-control" placeholder="Enter Phone">
 </div>
 
@@ -59,7 +103,6 @@ border:2px solid red;
 <table class="table table-bordered">
 
 <thead>
-
 <tr>
 <th>ID</th>
 <th>Name</th>
@@ -70,7 +113,6 @@ border:2px solid red;
 <th>Phone</th>
 <th>Action</th>
 </tr>
-
 </thead>
 
 <tbody id="userTable"></tbody>
