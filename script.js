@@ -1,32 +1,29 @@
 document.addEventListener("DOMContentLoaded", function () {
+  const userKey = "users";
+  let editId = null;
 
-const userKey = "users";
-let editId = null;
+  function getDatabase() {
+    let data = localStorage.getItem(userKey);
+    return data ? JSON.parse(data) : [];
+  }
 
-function getDatabase(){
-let data = localStorage.getItem(userKey);
-return data ? JSON.parse(data) : [];
-}
+  function saveDatabase(db) {
+    localStorage.setItem(userKey, JSON.stringify(db));
+  }
 
-function saveDatabase(db){
-localStorage.setItem(userKey, JSON.stringify(db));
-}
+  function loadUsers() {
+    let db = getDatabase();
+    bindTable(db);
+  }
 
-function loadUsers(){
-let db = getDatabase();
-bindTable(db);
-}
+  function bindTable(users) {
+    let table = document.getElementById("userTable");
+    table.innerHTML = "";
 
-function bindTable(users){
+    users.forEach(function (user) {
+      let row = document.createElement("tr");
 
-let table = document.getElementById("userTable");
-table.innerHTML = "";
-
-users.forEach(function(user){
-
-let row = document.createElement("tr");
-
-row.innerHTML = `
+      row.innerHTML = `
 <td>${user.id}</td>
 <td>${user.name}</td>
 <td>${user.website}</td>
@@ -41,137 +38,122 @@ row.innerHTML = `
 </td>
 `;
 
-row.querySelector(".editBtn").addEventListener("click", function(){
+      row.querySelector(".editBtn").addEventListener("click", function () {
+        document.getElementById("name").value = user.name;
+        document.getElementById("website").value = user.website;
 
-document.getElementById("name").value = user.name;
-document.getElementById("website").value = user.website;
+        document.getElementById("street").value = user.address.street;
+        document.getElementById("suite").value = user.address.suite;
+        document.getElementById("city").value = user.address.city;
+        document.getElementById("zipcode").value = user.address.zipcode;
 
-document.getElementById("street").value = user.address.street;
-document.getElementById("suite").value = user.address.suite;
-document.getElementById("city").value = user.address.city;
-document.getElementById("zipcode").value = user.address.zipcode;
+        document.getElementById("companyName").value = user.company.name;
+        document.getElementById("bs").value = user.company.bs;
+        document.getElementById("catchPhrase").value = user.company.catchPhrase;
 
-document.getElementById("companyName").value = user.company.name;
-document.getElementById("bs").value = user.company.bs;
-document.getElementById("catchPhrase").value = user.company.catchPhrase;
+        document.getElementById("email").value = user.email;
+        document.getElementById("phone").value = user.phone;
 
-document.getElementById("email").value = user.email;
-document.getElementById("phone").value = user.phone;
+        editId = user.id;
+      });
 
-editId = user.id;
+      row.querySelector(".deleteBtn").addEventListener("click", function () {
+        let db = getDatabase();
 
-});
+        db = db.filter((u) => u.id !== user.id);
 
-row.querySelector(".deleteBtn").addEventListener("click", function(){
+        saveDatabase(db);
 
-let db = getDatabase();
+        loadUsers();
+      });
 
-db = db.filter((u)=> u.id !== user.id);
+      table.appendChild(row);
+    });
+  }
 
-saveDatabase(db);
+  loadUsers();
 
-loadUsers();
+  document.getElementById("btnSave").addEventListener("click", function () {
+    let name = document.getElementById("name").value.trim();
+    let website = document.getElementById("website").value.trim();
 
-});
+    let street = document.getElementById("street").value.trim();
+    let suite = document.getElementById("suite").value.trim();
+    let city = document.getElementById("city").value.trim();
+    let zipcode = document.getElementById("zipcode").value.trim();
 
-table.appendChild(row);
+    let companyName = document.getElementById("companyName").value.trim();
+    let bs = document.getElementById("bs").value.trim();
+    let catchPhrase = document.getElementById("catchPhrase").value.trim();
 
-});
+    let email = document.getElementById("email").value.trim();
+    let phone = document.getElementById("phone").value.trim();
 
-}
+    let nameError = document.getElementById("nameError");
+    let nameInput = document.getElementById("name");
 
-loadUsers();
+    nameError.innerHTML = "";
+    nameInput.classList.remove("error");
 
-document.getElementById("btnSave").addEventListener("click", function(){
+    let isValid = true;
 
-let name = document.getElementById("name").value.trim();
-let website = document.getElementById("website").value.trim();
+    if (name === "") {
+      nameError.innerHTML = "Enter your name";
+      nameInput.classList.add("error");
+      isValid = false;
+    }
 
-let street = document.getElementById("street").value.trim();
-let suite = document.getElementById("suite").value.trim();
-let city = document.getElementById("city").value.trim();
-let zipcode = document.getElementById("zipcode").value.trim();
+    if (!isValid) return;
 
-let companyName = document.getElementById("companyName").value.trim();
-let bs = document.getElementById("bs").value.trim();
-let catchPhrase = document.getElementById("catchPhrase").value.trim();
+    let db = getDatabase();
 
-let email = document.getElementById("email").value.trim();
-let phone = document.getElementById("phone").value.trim();
+    let newUser = {
+      id: editId ? editId : Date.now().toString(),
 
-let nameError = document.getElementById("nameError");
-let nameInput = document.getElementById("name");
+      name,
+      website,
 
-nameError.innerHTML = "";
-nameInput.classList.remove("error");
+      address: {
+        street,
+        suite,
+        city,
+        zipcode,
+      },
 
-let isValid = true;
+      company: {
+        name: companyName,
+        bs,
+        catchPhrase,
+      },
 
-if(name === ""){
-nameError.innerHTML = "Enter your name";
-nameInput.classList.add("error");
-isValid = false;
-}
+      email,
+      phone,
+    };
 
-if(!isValid) return;
+    if (editId !== null) {
+      let index = db.findIndex((u) => u.id === editId);
 
-let db = getDatabase();
+      db[index] = newUser;
 
-let newUser = {
+      editId = null;
+    } else {
+      db.push(newUser);
+    }
 
-id: editId ? editId : Date.now().toString(),
+    saveDatabase(db);
 
-name,
-website,
+    document.getElementById("name").value = "";
+    document.getElementById("website").value = "";
+    document.getElementById("street").value = "";
+    document.getElementById("suite").value = "";
+    document.getElementById("city").value = "";
+    document.getElementById("zipcode").value = "";
+    document.getElementById("companyName").value = "";
+    document.getElementById("bs").value = "";
+    document.getElementById("catchPhrase").value = "";
+    document.getElementById("email").value = "";
+    document.getElementById("phone").value = "";
 
-address:{
-street,
-suite,
-city,
-zipcode
-},
-
-company:{
-name: companyName,
-bs,
-catchPhrase
-},
-
-email,
-phone
-
-};
-
-if(editId !== null){
-
-let index = db.findIndex((u)=> u.id === editId);
-
-db[index] = newUser;
-
-editId = null;
-
-}else{
-
-db.push(newUser);
-
-}
-
-saveDatabase(db);
-
-document.getElementById("name").value = "";
-document.getElementById("website").value = "";
-document.getElementById("street").value = "";
-document.getElementById("suite").value = "";
-document.getElementById("city").value = "";
-document.getElementById("zipcode").value = "";
-document.getElementById("companyName").value = "";
-document.getElementById("bs").value = "";
-document.getElementById("catchPhrase").value = "";
-document.getElementById("email").value = "";
-document.getElementById("phone").value = "";
-
-loadUsers();
-
-});
-
+    loadUsers();
+  });
 });
