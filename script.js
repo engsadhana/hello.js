@@ -1,152 +1,177 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-  const userKey = "users";
-  let editId = null;
+const userKey = "users";
+let editId = null;
 
-  function getDatabase() {
-    let data = localStorage.getItem(userKey);
-    return data ? JSON.parse(data) : [];
-  }
+function getDatabase(){
+let data = localStorage.getItem(userKey);
+return data ? JSON.parse(data) : [];
+}
 
-  function saveDatabase(db) {
-    localStorage.setItem(userKey, JSON.stringify(db));
-  }
+function saveDatabase(db){
+localStorage.setItem(userKey, JSON.stringify(db));
+}
 
-  function loadUsers() {
-    let db = getDatabase();
-    bindTable(db);
-  }
+function loadUsers(){
+let db = getDatabase();
+bindTable(db);
+}
 
-  function bindTable(users) {
+function bindTable(users){
 
-    let table = document.getElementById("userTable");
-    table.innerHTML = "";
+let table = document.getElementById("userTable");
+table.innerHTML = "";
 
-    users.forEach(function (user) {
+users.forEach(function(user){
 
-      let row = document.createElement("tr");
-console.log(user);
-      row.innerHTML = `
-        <td>${user.id}</td>
-        <td>${user.name}</td>
-        <td>${user.website}</td>
-        <td>${user.address.street}, ${user.address.suite}, ${user.address.city}, ${user.address.zipcode} </td>
-        <td>${user.company.name}, ${user.company.catchPhrase}</td>
-        <td>${user.email}</td>
-        <td>${user.phone}</td>
+let row = document.createElement("tr");
 
-        <td>
-        <button class="btn btn-warning btn-sm editBtn">Edit</button>
-        <button class="btn btn-danger btn-sm deleteBtn">Delete</button>
-        </td>`;
+row.innerHTML = `
+<td>${user.id}</td>
+<td>${user.name}</td>
+<td>${user.website}</td>
+<td>${user.address.street}, ${user.address.suite}, ${user.address.city}, ${user.address.zipcode}</td>
+<td>${user.company.name}, ${user.company.bs}, ${user.company.catchPhrase}</td>
+<td>${user.email}</td>
+<td>${user.phone}</td>
 
-      row.querySelector(".editBtn").addEventListener("click", function () {
+<td>
+<button class="btn btn-warning btn-sm editBtn">Edit</button>
+<button class="btn btn-danger btn-sm deleteBtn">Delete</button>
+</td>
+`;
 
-        document.getElementById("name").value = user.name;
-        document.getElementById("website").value = user.website;
-        // document.getElementById("address"),.value = .address;
-        document.getElementById("company").value = user.company;
-        document.getElementById("email").value = user.email;
-        document.getElementById("phone").value = user.phone;
+row.querySelector(".editBtn").addEventListener("click", function(){
 
-        editId = user.id;
+document.getElementById("name").value = user.name;
+document.getElementById("website").value = user.website;
 
-      });
+document.getElementById("street").value = user.address.street;
+document.getElementById("suite").value = user.address.suite;
+document.getElementById("city").value = user.address.city;
+document.getElementById("zipcode").value = user.address.zipcode;
 
-      row.querySelector(".deleteBtn").addEventListener("click", function () {
+document.getElementById("companyName").value = user.company.name;
+document.getElementById("bs").value = user.company.bs;
+document.getElementById("catchPhrase").value = user.company.catchPhrase;
 
-        let db = getDatabase();
+document.getElementById("email").value = user.email;
+document.getElementById("phone").value = user.phone;
 
-        db = db.filter((u) => u.id !== user.id);
+editId = user.id;
 
-        saveDatabase(db);
+});
 
-        loadUsers();
+row.querySelector(".deleteBtn").addEventListener("click", function(){
 
-      });
+let db = getDatabase();
 
-      table.appendChild(row);
+db = db.filter((u)=> u.id !== user.id);
 
-    });
+saveDatabase(db);
 
-  }
+loadUsers();
 
-  loadUsers();
+});
 
-  document.getElementById("btnSave").addEventListener("click", function () {
+table.appendChild(row);
 
-    let name = document.getElementById("name").value.trim();
-    let website = document.getElementById("website").value.trim();
-    let address = document.getElementById("address") .value.trim();
-    let company = document.getElementById("company").value.trim();
-    let email = document.getElementById("email").value.trim();
-    let phone = document.getElementById("phone").value.trim();
+});
 
-    let nameError = document.getElementById("nameError");
-    let nameInput = document.getElementById("name");
+}
 
-    nameError.innerHTML = "";
-    nameInput.classList.remove("error");
+loadUsers();
 
-    let isValid = true;
+document.getElementById("btnSave").addEventListener("click", function(){
 
-    if (name === "") {
+let name = document.getElementById("name").value.trim();
+let website = document.getElementById("website").value.trim();
 
-      nameError.innerHTML = "Enter your name";
-      nameInput.classList.add("error");
-      isValid = false;
+let street = document.getElementById("street").value.trim();
+let suite = document.getElementById("suite").value.trim();
+let city = document.getElementById("city").value.trim();
+let zipcode = document.getElementById("zipcode").value.trim();
 
-    }
+let companyName = document.getElementById("companyName").value.trim();
+let bs = document.getElementById("bs").value.trim();
+let catchPhrase = document.getElementById("catchPhrase").value.trim();
 
-    if (!isValid) return;
+let email = document.getElementById("email").value.trim();
+let phone = document.getElementById("phone").value.trim();
 
-    let db = getDatabase();
+let nameError = document.getElementById("nameError");
+let nameInput = document.getElementById("name");
 
-    if (editId !== null) {
+nameError.innerHTML = "";
+nameInput.classList.remove("error");
 
-      let index = db.findIndex((u) => u.id === editId);
+let isValid = true;
 
-      db[index] = {
+if(name === ""){
+nameError.innerHTML = "Enter your name";
+nameInput.classList.add("error");
+isValid = false;
+}
 
-        id: editId,
-        name,
-        website,
-        address,
-        company,
-        email,
-        phone
+if(!isValid) return;
 
-      };
+let db = getDatabase();
 
-      editId = null;
+let newUser = {
 
-    } else {
+id: editId ? editId : Date.now().toString(),
 
-      db.push({
+name,
+website,
 
-        id: Date.now().toString(),
-        name,
-        website,
-        address,
-        company,
-        email,
-        phone
+address:{
+street,
+suite,
+city,
+zipcode
+},
 
-      });
+company:{
+name: companyName,
+bs,
+catchPhrase
+},
 
-    }
+email,
+phone
 
-    saveDatabase(db);
+};
 
-    document.getElementById("name").value = "";
-    document.getElementById("website").value = "";
-    document.getElementById("address").value = "";
-    document.getElementById("company").value = "";
-    document.getElementById("email").value = "";
-    document.getElementById("phone").value = "";
+if(editId !== null){
 
-    loadUsers();
+let index = db.findIndex((u)=> u.id === editId);
 
-  });
+db[index] = newUser;
+
+editId = null;
+
+}else{
+
+db.push(newUser);
+
+}
+
+saveDatabase(db);
+
+document.getElementById("name").value = "";
+document.getElementById("website").value = "";
+document.getElementById("street").value = "";
+document.getElementById("suite").value = "";
+document.getElementById("city").value = "";
+document.getElementById("zipcode").value = "";
+document.getElementById("companyName").value = "";
+document.getElementById("bs").value = "";
+document.getElementById("catchPhrase").value = "";
+document.getElementById("email").value = "";
+document.getElementById("phone").value = "";
+
+loadUsers();
+
+});
 
 });
