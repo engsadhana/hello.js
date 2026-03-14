@@ -7,10 +7,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 
     <style>
-        .error::placeholder {
-            color: red;
-        }
-
         input.error {
             border: 2px solid red;
         }
@@ -20,78 +16,110 @@
 
 <body class="container mt-4">
 
-    <h3>User Form</h3>
+    <h3 id="formTop">User Form</h3>
 
     <div class="mb-3">
         <label>Name</label>
-        <input type="text" id="name" class="form-control" placeholder="Enter Name">
-        <small id="nameError" class="text-danger"></small>
+        <input type="text" id="name" class="form-control" onblur="validateField(this)" data-required="true"
+            data-validation="Please enter name" data-regex="nameRegex"
+            data-regex-validation="Name cannot contain numbers" placeholder="Enter Name">
+
+        <small class="text-danger error"></small>
     </div>
+
 
     <div class="mb-3">
         <label>Website</label>
-        <input type="text" id="website" class="form-control" placeholder="Enter Website">
+        <input type="text" id="website" class="form-control" onblur="validateField(this)" data-required="true"
+            data-validation="Please enter website" data-regex="urlRegex" data-regex-validation="Enter valid website"
+            placeholder="Enter Website">
+
+        <small class="text-danger error"></small>
     </div>
 
-    <!-- Address -->
 
-    <div class="mb-3">
+    <label>Address</label>
 
-        <label>Address</label>
+    <div class="row mb-3">
 
-        <div class="row">
+        <div class="col">
+            <input type="text" id="street" class="form-control"                placeholder="Street">
+            <small class="text-denger error"></small>
+        </div>
 
-            <div class="col">
-                <input type="text" id="street" class="form-control" placeholder="Street">
-            </div>
-
-            <div class="col">
-                <input type="text" id="suite" class="form-control" placeholder="Suite">
-            </div>
-
-            <div class="col">
-                <input type="text" id="city" class="form-control" placeholder="City">
-            </div>
-
-            <div class="col">
-                <input type="text" id="zipcode" class="form-control" placeholder="Zipcode">
-            </div>
+        <div class="col">
+            <input type="text" id="suite" class="form-control"
+                placeholder="Suite">
+            <small class="text-denger error"></small>
 
         </div>
-    </div>
 
-    <!-- Company -->
-
-    <div class="mb-3">
-
-        <label>Company</label>
-
-        <div class="row">
-
-            <div class="col">
-                <input type="text" id="companyName" class="form-control" placeholder="Company Name">
-            </div>
-
-            <div class="col">
-                <input type="text" id="bs" class="form-control" placeholder="BS">
-            </div>
-
-            <div class="col">
-                <input type="text" id="catchPhrase" class="form-control" placeholder="Catch Phrase">
-            </div>
-
+        <div class="col">
+            <input type="text" id="city" class="form-control" onblur="validateField(this)" data-required="true"
+                data-validation="Please enter City"
+                placeholder="City">
+            <small class="text-danger error"></small>
         </div>
+
+        <div class="col">
+            <input type="number" id="zipcode" class="form-control" onblur="validateField(this)" data-required="true"
+                data-validation="Please enter Zipcode" maxlength="999999" minlength="100000"
+                placeholder="Zipcode">
+            <small class="text-danger error"></small>
+        </div>
+
     </div>
+
+
+    <label>Company</label>
+
+    <div class="row mb-3">
+
+        <div class="col">
+            <input type="text" id="companyName" class="form-control" onblur="validateField(this)" data-required="true"
+                data-validation="Please enter Company Name" placeholder="Company Name">
+            <small class="text-danger error"></small>
+        </div>
+
+        <div class="col">
+            <input type="text" id="bs" class="form-control" onblur="validateField(this)" data-required="true"
+                data-validation="Please enter BS" 
+                placeholder="BS">
+            <small class="text-denger error"></small>
+        </div>
+
+        <div class="col">
+            <input type="text" id="catchPhrase" class="form-control" onblur="validateField(this)" data-required="true"
+                data-validation="Please enter Catch Phrase" placeholder="Catch Phrase">
+            <small class="text-denger error"></small>
+        </div>
+
+    </div>
+
 
     <div class="mb-3">
         <label>Email</label>
-        <input type="email" id="email" class="form-control" placeholder="Enter Email">
+
+        <input type="text" id="email" class="form-control" onblur="validateField(this)" data-required="true"
+            data-validation="Please enter email" data-regex="emailRegex" data-regex-validation="Enter valid email"
+            placeholder="Enter Email">
+
+        <small class="text-danger error"></small>
+
     </div>
+
 
     <div class="mb-3">
         <label>Phone</label>
-        <input type="text" id="phone" class="form-control" placeholder="Enter Phone">
+
+        <input type="text" id="phone" class="form-control" onblur="validateField(this)" data-required="true"
+            data-validation="Please enter phone" data-regex="phoneRegex" data-regex-validation="Phone must be 10 digits"
+            placeholder="Enter Phone">
+
+        <small class="text-danger error"></small>
+
     </div>
+
 
     <button id="btnSave" class="btn btn-primary">Save</button>
 
@@ -102,7 +130,9 @@
     <table class="table table-bordered">
 
         <thead>
+
             <tr>
+
                 <th>ID</th>
                 <th>Name</th>
                 <th>Website</th>
@@ -111,12 +141,15 @@
                 <th>Email</th>
                 <th>Phone</th>
                 <th>Action</th>
+
             </tr>
+
         </thead>
 
         <tbody id="userTable"></tbody>
 
     </table>
+
 
     <script src="script.js"></script>
 
